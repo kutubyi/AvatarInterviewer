@@ -1,174 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>Avatar Interview PoC - Single Button Flow</title>
-
-  <style>
-    body,
-    html {
-      width: 100%;
-      height: 100%;
-      max-width: 800px;
-      margin: auto;
-      position: relative;
-      background: #202020;
-      color: #fff;
-      font-family: Arial, sans-serif;
-    }
-
-    #avatar {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    #ui {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      right: 10px;
-    }
-
-    #question {
-      margin-bottom: 6px;
-      font-size: 20px;
-      min-height: 24px;
-    }
-
-    button {
-      font-size: 16px;
-      padding: 4px 10px;
-    }
-
-    #loading {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      right: 10px;
-      font-size: 18px;
-    }
-  </style>
-
+  <meta charset="utf-8" />
+  <title>Avatar Interviewer</title>
+  <link rel="stylesheet" href="css/main.css" />
   <script type="importmap">
-  { "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js/+esm",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
+  {
+    "imports": {
+      "three":       "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js/+esm",
+      "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
       "talkinghead": "https://cdn.jsdelivr.net/gh/met4citizen/TalkingHead@1.5/modules/talkinghead.mjs"
-    } }
-  </script>
-
-  <script type="module">
-    import { TalkingHead } from "talkinghead";
-
-    // Interview script
-    const questions = [
-      "Please tell me your full name.",
-      "How are you feeling today?",
-      "Can you describe what you had for breakfast?"
-    ];
-    let qIndex = 0;
-    let awaitingAnswer = false; // false: ready to ask / true: recording answer
-
-    // UI nodes
-    const nodeAvatar = document.getElementById('avatar');
-    const nodeQ = document.getElementById('question');
-    const btnNext = document.getElementById('btnNext');
-    const nodeLoading = document.getElementById('loading');
-
-    // Avatar
-    const head = new TalkingHead(nodeAvatar, {
-      ttsEndpoint: "https://eu-texttospeech.googleapis.com/v1beta1/text:synthesize",
-      ttsApikey: "AIzaSyAAXzKB4YH_NGJM_nXCgyRgfn9X0YoH248",
-      lipsyncModules: ["en", "fi"],
-      cameraView: "upper"
-    });
-
-    await loadAvatar();          // show avatar first
-    btnNext.disabled = false;    // enable start button
-
-    let mediaRec, chunks = [];
-
-    async function startRecording() {
-      chunks = [];
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRec = new MediaRecorder(stream);
-      mediaRec.ondataavailable = e => chunks.push(e.data);
-      mediaRec.onstop = saveRecording;
-      mediaRec.start();
     }
-
-    function stopRecording() {
-      mediaRec?.stop();
-    }
-
-    function saveRecording() {
-      const blob = new Blob(chunks, { type: 'audio/webm' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `answer_${qIndex + 1}.webm`;
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    btnNext.addEventListener('click', handleClick);
-
-    async function handleClick() {
-      if (awaitingAnswer) {
-        // Participant finished answering current question
-        stopRecording();
-        awaitingAnswer = false;
-        qIndex++;
-
-        if (qIndex >= questions.length) {
-          nodeQ.textContent = "Interview done 🎉";
-          btnNext.disabled = true;
-          return;
-        }
-
-        nodeQ.textContent = "(ready for next question)";
-        btnNext.textContent = "Next Question ▶︎";
-        return;
-      }
-
-      // Ask the next question
-      const text = questions[qIndex];
-      nodeQ.textContent = text;
-      btnNext.disabled = true;           // lock button during TTS
-
-      await head.speakText(text);            // avatar speaks
-      await startRecording();                // start audio capture
-
-      awaitingAnswer = true;
-      btnNext.textContent = qIndex === questions.length - 1 ? "Finish Interview ⏹︎" : "Finish Answer ⏹︎";
-      btnNext.disabled = false;
-    }
-
-    async function loadAvatar() {
-      try {
-        nodeLoading.textContent = "Loading...";
-        await head.showAvatar({
-          url: 'https://models.readyplayer.me/64bfa15f0e72c63d7c3934a6.glb?morphTargets=ARKit,Oculus+Visemes,mouthOpen,mouthSmile,eyesClosed,eyesLookUp,eyesLookDown&textureSizeLimit=1024&textureFormat=png',
-          body: 'F', avatarMood: 'neutral',
-          ttsLang: "en-GB", ttsVoice: "en-GB-Standard-A", lipsyncLang: "en"
-        }, ev => {
-          if (ev.lengthComputable) {
-            nodeLoading.textContent = `Loading ${Math.round(ev.loaded / ev.total * 100)}%`;
-          }
-        });
-        nodeLoading.style.display = 'none';
-      } catch (err) {
-        nodeLoading.textContent = err;
-        console.error(err);
-      }
-    }
-
-    // pause animation when tab hidden
-    document.addEventListener("visibilitychange", () => (
-      document.visibilityState === "visible" ? head.start() : head.stop()
-    ));
+  }
   </script>
 </head>
 
@@ -177,10 +21,12 @@
 
   <div id="ui">
     <div id="question">(ready)</div>
-    <button id="btnNext" disabled>Start ▶︎</button>
+    <button id="mainBtn" disabled>Start ▶︎</button>
   </div>
 
   <div id="loading"></div>
+
+  <script type="module" src="js/main.js"></script>
 </body>
 
 </html>
