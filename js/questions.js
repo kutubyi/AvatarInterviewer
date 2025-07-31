@@ -5,5 +5,5 @@ export const questions = [
 ];
 
 export const calibration = [
-    "3秒間「あー」と言ってください。"
+    "３秒間「あー」と言ってください。"
 ];
