@@ -17,8 +17,9 @@ export class Avatar {
                 url: modelUrl,
                 body: 'F',
                 avatarMood: 'neutral',
-                ttsLang: 'en-GB',
-                ttsVoice: 'en-GB-Standard-A',
+
+                ttsLang: 'ja-JP',
+                ttsVoice: 'ja-JP-Standard-A',
                 lipsyncLang: 'en'
             },
             onProgress
