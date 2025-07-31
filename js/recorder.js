@@ -34,7 +34,6 @@ export class Recorder {
             this.#previewEl.srcObject = this.#stream;
             this.#previewEl.style.display = 'block';
 
-            // Find supported MIME type
             const options = { mimeType: 'video/webm' };
 
             this.#mediaRec = new MediaRecorder(this.#stream, options);
@@ -84,6 +83,6 @@ export class Recorder {
     }
 
     #getFileExtension() {
-        return this.#mediaRec.mimeType.includes('webm') ? 'webm' : 'mp4';
+        return 'webm';
     }
 }
