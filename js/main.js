@@ -26,7 +26,7 @@ let awaitingAnswer = false;
     );
 
     ui.hideLoading();
-    ui.setProgress(0, calibration.length + questions.length);
+    ui.setProgress('Calibration', 0, calibration.length);
     ui.setBtn('Start Calibration ▶︎');
 
     ui.onClick(handleClick);
@@ -71,7 +71,6 @@ async function startRecording() {
     } else {
         ui.setBtn('Start Failed.');
     }
-
 }
 
 async function finishRecording() {
@@ -94,32 +93,33 @@ async function finishRecording() {
         }
     }
 
-    qIndex++;
     awaitingAnswer = false;
 
-    // Check phase transitions
-    if (isCalibration && qIndex >= calibration.length) {
+    if (isCalibration) {
+        ui.setProgress('Calibration', qIndex + 1, calibration.length);
+    } else {
+        ui.setProgress('Interview', qIndex + 1, questions.length);
+    }
+
+    // Phase transition
+    if (isCalibration && qIndex >= calibration.length - 1) {
         currentPhase = 'interview';
         qIndex = 0;
         ui.setQuestion('Calibration complete. Ready for first interview question.');
         ui.setBtn('Start Interview ▶︎');
+        ui.setProgress('Interview', 0, questions.length); 
     }
-    else if (!isCalibration && qIndex >= questions.length) {
+    else if (!isCalibration && qIndex >= questions.length - 1) {
         ui.setQuestion('Interview complete! Thank you.');
         ui.setBtn('Done', true);
         saveSessionData();
         return;
     }
     else {
+        qIndex++;
         ui.setQuestion('(ready for next)');
         ui.setBtn(isCalibration ? 'Next Calibration ▶︎' : 'Next Question ▶︎');
     }
-
-    // Update progress
-    const total = calibration.length + questions.length;
-    const completed = currentPhase === 'calibration' ?
-        qIndex : calibration.length + qIndex;
-    ui.setProgress(completed, total);
 }
 
 function saveSessionData() {

@@ -11,8 +11,8 @@ export class UI {
 
     setQuestion(text) { this.question.textContent = text; }
 
-    setProgress(current, total) { 
-        this.progress.textContent = `${current}/${total}`;
+    setProgress(phase, current, total) {
+        this.progress.textContent = `${phase}: ${current}/${total}`;
     }
 
     setBtn(label, disabled = false) {
