@@ -1,9 +1,9 @@
 export const questions = [
-    'Please tell me your full name.',
-    'How are you feeling today?',
-    'Can you describe what you had for breakfast?'
+    'フルネームを教えてください。',
+    '今日の体調はいかがですか？',
+    '朝食は何を食べましたか？'
 ];
 
 export const calibration = [
-    "Please say 'aah' for 3 seconds."
+    "3秒間「あー」と言ってください。"
 ];
