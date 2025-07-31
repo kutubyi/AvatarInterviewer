@@ -39,3 +39,9 @@ button {
     right: 10px;
     font-size: 18px;
 }
+
+#progress {
+  margin: 10px 0;
+  font-size: 1.1em;
+  color: #555;
+}

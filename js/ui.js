@@ -3,12 +3,17 @@ export class UI {
         this.mainBtn = document.getElementById('mainBtn');
         this.question = document.getElementById('question');
         this.loading = document.getElementById('loading');
+        this.progress = document.getElementById('progress'); 
     }
 
     setLoading(text) { this.loading.textContent = text; }
     hideLoading() { this.loading.style.display = 'none'; }
 
     setQuestion(text) { this.question.textContent = text; }
+
+    setProgress(current, total) { 
+        this.progress.textContent = `${current}/${total}`;
+    }
 
     setBtn(label, disabled = false) {
         this.mainBtn.textContent = label;
