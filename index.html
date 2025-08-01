@@ -3,13 +3,13 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Avatar Interviewer</title>
+  <title>Avatar Interviewer (Auto)</title>
   <link rel="stylesheet" href="css/main.css" />
   <script type="importmap">
   {
     "imports": {
-      "three":       "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js/+esm",
-      "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js/+esm",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
       "talkinghead": "https://cdn.jsdelivr.net/gh/met4citizen/TalkingHead@1.5/modules/talkinghead.mjs"
     }
   }
@@ -21,7 +21,9 @@
 
   <div id="ui">
     <div id="question">(ready)</div>
-    <button id="mainBtn" disabled>Start ▶︎</button>
+    <div id="progress">0/0</div>
+    <button id="mainBtn" disabled>Start Interview ▶︎</button>
+    <div id="status"></div> <!-- Added status indicator -->
   </div>
 
   <div id="loading"></div>

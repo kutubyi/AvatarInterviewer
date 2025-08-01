@@ -39,3 +39,34 @@ button {
     right: 10px;
     font-size: 18px;
 }
+
+/* Add to existing CSS */
+#status {
+  margin: 10px 0;
+  font-size: 1em;
+  color: #666;
+  font-style: italic;
+}
+
+#progress {
+  margin: 10px 0;
+  font-size: 1.1em;
+  color: #555;
+  font-weight: bold;
+}
+
+.recording-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  margin-right: 8px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
