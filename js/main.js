@@ -18,6 +18,9 @@ let currentPhase = 'calibration'; // 'calibration' or 'interview'
 let qIndex = 0;
 let awaitingAnswer = false;
 
+let timerInterval = null;
+let elapsedSeconds = 0;
+
 // Initialize
 (async () => {
     await avatar.load(
@@ -29,11 +32,32 @@ let awaitingAnswer = false;
     ui.setProgress('Calibration', 0, calibration.length);
     ui.setBtn('Start Calibration ▶︎');
 
+    ui.hideTimer();
+
     ui.onClick(handleClick);
     document.addEventListener('visibilitychange', () =>
         document.visibilityState === 'visible' ? avatar.start() : avatar.stop()
     );
 })();
+
+function startTimer() {
+    elapsedSeconds = 0;
+    ui.setTimer(0);
+    ui.showTimer();
+
+    timerInterval = setInterval(() => {
+        elapsedSeconds++;
+        ui.setTimer(elapsedSeconds);
+    }, 1000);
+}
+
+function stopTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+    ui.hideTimer();
+}
 
 async function handleClick() {
     if (awaitingAnswer) {
@@ -59,12 +83,14 @@ async function startRecording() {
 
     ui.setQuestion(prompt);
 
-
     await avatar.speak(prompt);
+
     const recordingStarted = await recorder.start();
 
     if (recordingStarted) {
         awaitingAnswer = true;
+        startTimer(); 
+
         ui.setBtn(isCalibration ? 'Finish Calibration ⏹︎' :
             (qIndex === questions.length - 1 ?
                 'Finish Interview ⏹︎' : 'Finish Answer ⏹︎'));
@@ -77,12 +103,15 @@ async function finishRecording() {
     const isCalibration = currentPhase === 'calibration';
     ui.setBtn('Processing...', true);
 
+    stopTimer();
+
     const recordingData = await recorder.stop(qIndex, isCalibration);
 
     if (recordingData) {
         const entry = {
             index: qIndex,
             prompt: isCalibration ? calibration[qIndex] : questions[qIndex],
+            duration: elapsedSeconds, 
             ...recordingData
         };
 

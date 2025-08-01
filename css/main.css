@@ -41,7 +41,13 @@ button {
 }
 
 #progress {
-  margin: 10px 0;
-  font-size: 1.1em;
-  color: #555;
+    margin: 10px 0;
+    font-size: 1.1em;
+    color: #555;
+}
+
+#timer {
+    font-size: 1.5em;
+    margin: 10px 0;
+    font-family: monospace;
 }

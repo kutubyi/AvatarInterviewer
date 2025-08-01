@@ -3,7 +3,8 @@ export class UI {
         this.mainBtn = document.getElementById('mainBtn');
         this.question = document.getElementById('question');
         this.loading = document.getElementById('loading');
-        this.progress = document.getElementById('progress'); 
+        this.progress = document.getElementById('progress');
+        this.timer = document.getElementById('timer');
     }
 
     setLoading(text) { this.loading.textContent = text; }
@@ -14,6 +15,16 @@ export class UI {
     setProgress(phase, current, total) {
         this.progress.textContent = `${phase}: ${current}/${total}`;
     }
+
+    setTimer(seconds) {
+        const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+        const secs = (seconds % 60).toString().padStart(2, '0');
+        this.timer.textContent = `${mins}:${secs}`;
+    }
+
+    showTimer() { this.timer.style.display = 'block'; }
+    
+    hideTimer() { this.timer.style.display = 'none'; }
 
     setBtn(label, disabled = false) {
         this.mainBtn.textContent = label;
