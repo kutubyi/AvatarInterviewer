@@ -1,7 +1,10 @@
+// js/ui.js
 export class UI {
     constructor() {
         this.mainBtn = document.getElementById('mainBtn');
         this.replayBtn = document.getElementById('replayBtn');
+        this.restartBtn = document.getElementById('restartBtn');
+        this.exitBtn = document.getElementById('exitBtn');
         this.question = document.getElementById('question');
         this.loading = document.getElementById('loading');
         this.progress = document.getElementById('progress');
@@ -24,7 +27,7 @@ export class UI {
     }
 
     showTimer() { this.timer.style.display = 'block'; }
-    
+
     hideTimer() { this.timer.style.display = 'none'; }
 
     setBtn(label, disabled = false) {
@@ -36,9 +39,25 @@ export class UI {
         this.replayBtn.disabled = disabled;
     }
 
+    setRestartBtn(disabled) {
+        this.restartBtn.disabled = disabled;
+    }
+
+    setExitBtn(disabled) {
+        this.exitBtn.disabled = disabled;
+    }
+
     onClick(cb) { this.mainBtn.addEventListener('click', cb); }
 
     onReplayClick(cb) {
         this.replayBtn.addEventListener('click', cb);
+    }
+
+    onRestartClick(cb) {
+        this.restartBtn.addEventListener('click', cb);
+    }
+
+    onExitClick(cb) {
+        this.exitBtn.addEventListener('click', cb);
     }
 }

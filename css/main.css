@@ -59,49 +59,97 @@ html {
     border-radius: 8px;
 }
 
-button {
-    font-size: 16px;
-    padding: 4px 10px;
+#controls {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 15px;
 }
 
-#mainBtn {
-    flex: 3;
+/* Button base styles */
+.control-btn {
     font-size: 16px;
     padding: 12px 0;
-    background-color: #4a6fa5;
-    color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s ease;
+    text-align: center;
+    font-weight: 600;
+}
+
+#mainBtn {
+    background-color: #4a6fa5;
+    color: white;
 }
 
 #mainBtn:hover:not(:disabled) {
     background-color: #3a5a8a;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 #mainBtn:disabled {
     background-color: #555;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 #replayBtn {
-    flex: 2;
-    font-size: 16px;
-    padding: 12px 0;
     background-color: #5d5d5d;
     color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s;
 }
 
 #replayBtn:hover:not(:disabled) {
     background-color: #4a4a4a;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 #replayBtn:disabled {
     background-color: #333;
     cursor: not-allowed;
+}
+
+#restartBtn {
+    background-color: #ff9800;
+    color: #fff;
+}
+
+#restartBtn:hover:not(:disabled) {
+    background-color: #e68a00;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#restartBtn:disabled {
+    background-color: #b36b00;
+    cursor: not-allowed;
+}
+
+#exitBtn {
+    background-color: #f44336;
+    color: #fff;
+}
+
+#exitBtn:hover:not(:disabled) {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#exitBtn:disabled {
+    background-color: #b71c1c;
+    cursor: not-allowed;
+}
+
+.control-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.control-btn:not(:disabled):active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
