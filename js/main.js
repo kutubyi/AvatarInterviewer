@@ -27,7 +27,7 @@ let isReplaying = false;
 // Initialize
 (async () => {
     await avatar.load(
-        'https://models.readyplayer.me/689074a3e9fd634bec12b081.glb?morphTargets=ARKit,Oculus+Visemes,mouthOpen,mouthSmile,eyesClosed,eyesLookUp,eyesLookDown&textureSizeLimit=1024&textureFormat=png',
+        '/assets/doctor.glb',
         ev => ev.lengthComputable && ui.setLoading(`Loading ${Math.round(ev.loaded / ev.total * 100)}%`)
     );
 
