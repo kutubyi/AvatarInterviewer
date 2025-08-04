@@ -17,9 +17,11 @@ const sessionData = {
 let currentPhase = 'calibration'; // 'calibration' or 'interview'
 let qIndex = 0;
 let awaitingAnswer = false;
+let currentPrompt = '';
 
 let timerInterval = null;
 let elapsedSeconds = 0;
+let isReplaying = false;
 
 // Initialize
 (async () => {
@@ -31,10 +33,12 @@ let elapsedSeconds = 0;
     ui.hideLoading();
     ui.setProgress('Calibration', 0, calibration.length);
     ui.setBtn('Start Calibration ▶︎');
+    ui.setReplayBtn(true);
 
     ui.hideTimer();
 
     ui.onClick(handleClick);
+    ui.onReplayClick(handleReplayClick);
     document.addEventListener('visibilitychange', () =>
         document.visibilityState === 'visible' ? avatar.start() : avatar.stop()
     );
@@ -59,6 +63,25 @@ function stopTimer() {
     ui.hideTimer();
 }
 
+async function handleReplayClick() {
+    if (isReplaying) return; // Prevent multiple clicks
+
+    isReplaying = true;
+    ui.setReplayBtn(true); // Disable during replay
+
+    try {
+        await avatar.speak(currentPrompt);
+    } catch (error) {
+        console.error('Replay failed', error);
+    } finally {
+        isReplaying = false;
+        // Only re-enable if we're still in answer mode
+        if (awaitingAnswer) {
+            ui.setReplayBtn(false);
+        }
+    }
+}
+
 async function handleClick() {
     if (awaitingAnswer) {
         // User finished answering
@@ -81,7 +104,9 @@ async function startRecording() {
         ui.setBtn('Speaking...', true);
     }
 
+    currentPrompt = prompt; 
     ui.setQuestion(prompt);
+    ui.setReplayBtn(true); 
 
     await avatar.speak(prompt);
 
@@ -89,19 +114,22 @@ async function startRecording() {
 
     if (recordingStarted) {
         awaitingAnswer = true;
-        startTimer(); 
+        startTimer();
+        ui.setReplayBtn(false);
 
         ui.setBtn(isCalibration ? 'Finish Calibration ⏹︎' :
             (qIndex === questions.length - 1 ?
                 'Finish Interview ⏹︎' : 'Finish Answer ⏹︎'));
     } else {
         ui.setBtn('Start Failed.');
+        ui.setReplayBtn(false);
     }
 }
 
 async function finishRecording() {
     const isCalibration = currentPhase === 'calibration';
     ui.setBtn('Processing...', true);
+    ui.setReplayBtn(true);
 
     stopTimer();
 

@@ -7,6 +7,7 @@ html {
     background: #202020;
     color: #fff;
     font-family: Arial, sans-serif;
+    overflow: hidden;
 }
 
 #avatar {
@@ -19,12 +20,43 @@ html {
     top: 10px;
     left: 10px;
     right: 10px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 #question {
-    margin-bottom: 6px;
+    margin-bottom: 15px;
     font-size: 20px;
     min-height: 24px;
+    line-height: 1.4;
+}
+
+#progress {
+    margin: 10px 0;
+    font-size: 1.1em;
+    color: #aaa;
+}
+
+#timer {
+    font-size: 1.8em;
+    margin: 10px 0;
+    font-family: monospace;
+    display: none;
+    text-align: center;
+}
+
+#loading {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    font-size: 18px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 8px;
 }
 
 button {
@@ -32,22 +64,44 @@ button {
     padding: 4px 10px;
 }
 
-#loading {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    font-size: 18px;
+#mainBtn {
+    flex: 3;
+    font-size: 16px;
+    padding: 12px 0;
+    background-color: #4a6fa5;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
-#progress {
-    margin: 10px 0;
-    font-size: 1.1em;
-    color: #555;
+#mainBtn:hover:not(:disabled) {
+    background-color: #3a5a8a;
 }
 
-#timer {
-    font-size: 1.5em;
-    margin: 10px 0;
-    font-family: monospace;
+#mainBtn:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+}
+
+#replayBtn {
+    flex: 2;
+    font-size: 16px;
+    padding: 12px 0;
+    background-color: #5d5d5d;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#replayBtn:hover:not(:disabled) {
+    background-color: #4a4a4a;
+}
+
+#replayBtn:disabled {
+    background-color: #333;
+    cursor: not-allowed;
 }

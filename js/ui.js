@@ -1,6 +1,7 @@
 export class UI {
     constructor() {
         this.mainBtn = document.getElementById('mainBtn');
+        this.replayBtn = document.getElementById('replayBtn');
         this.question = document.getElementById('question');
         this.loading = document.getElementById('loading');
         this.progress = document.getElementById('progress');
@@ -31,5 +32,13 @@ export class UI {
         this.mainBtn.disabled = disabled;
     }
 
+    setReplayBtn(disabled) {
+        this.replayBtn.disabled = disabled;
+    }
+
     onClick(cb) { this.mainBtn.addEventListener('click', cb); }
+
+    onReplayClick(cb) {
+        this.replayBtn.addEventListener('click', cb);
+    }
 }
