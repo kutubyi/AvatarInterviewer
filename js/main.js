@@ -27,7 +27,7 @@ let isReplaying = false;
 // Initialize
 (async () => {
     await avatar.load(
-        '/assets/doctor.glb',
+        '/assets/avatars/doctor.glb',
         ev => ev.lengthComputable && ui.setLoading(`Loading ${Math.round(ev.loaded / ev.total * 100)}%`)
     );
 
@@ -45,12 +45,12 @@ let isReplaying = false;
 })();
 
 function resetUI() {
-    ui.setProgress('Calibration', 0, calibration.length);
-    ui.setBtn('Start Calibration ▶︎');
+    ui.setProgress('調整', 0, calibration.length);
+    ui.setBtn('調整開始');
     ui.setReplayBtn(true);
     ui.setRestartBtn(false);
     ui.setExitBtn(false);
-    ui.setQuestion('(ready)');
+    ui.setQuestion('(準備完了)');
     ui.hideTimer();
 }
 
@@ -112,19 +112,19 @@ async function handleReplayClick() {
 }
 
 async function handleRestartClick() {
-    if (confirm('Are you sure you want to restart? All progress will be lost.')) {
+    if (confirm('再起動してもよろしいですか？これまでの記録は保存されません。')) {
         resetSession();
     }
 }
 
 function handleExitClick() {
-    if (confirm('Are you sure you want to exit?')) {
+    if (confirm('終了してもよろしいですか？')) {
         // Save any collected data before exiting
         if (sessionData.calibration.length > 0 || sessionData.interview.length > 0) {
             saveSessionData();
         }
         // Show thank you message
-        ui.setQuestion('Session ended. Thank you for your participation.');
+        ui.setQuestion('途中終了しました。ご協力ありがとうございました。');
         ui.setBtn('Exit', true);
         ui.setReplayBtn(true);
         ui.setRestartBtn(true);
@@ -148,10 +148,10 @@ async function startRecording() {
 
     if (isCalibration) {
         prompt = calibration[qIndex];
-        ui.setBtn('Speaking...', true);
+        ui.setBtn('音声再生中...', true);
     } else {
         prompt = questions[qIndex];
-        ui.setBtn('Speaking...', true);
+        ui.setBtn('音声再生中...', true);
     }
 
     currentPrompt = prompt; 
@@ -171,9 +171,9 @@ async function startRecording() {
         ui.setRestartBtn(false);
         ui.setExitBtn(false);
 
-        ui.setBtn(isCalibration ? 'Finish Calibration ⏹︎' :
+        ui.setBtn(isCalibration ? '調整終了' :
             (qIndex === questions.length - 1 ?
-                'Finish Interview ⏹︎' : 'Finish Answer ⏹︎'));
+                'インタビュー終了' : '回答終了'));
     } else {
         ui.setBtn('Start Failed.');
         ui.setReplayBtn(false);
@@ -213,22 +213,22 @@ async function finishRecording() {
     ui.setExitBtn(false);
 
     if (isCalibration) {
-        ui.setProgress('Calibration', qIndex + 1, calibration.length);
+        ui.setProgress('調整', qIndex + 1, calibration.length);
     } else {
-        ui.setProgress('Interview', qIndex + 1, questions.length);
+        ui.setProgress('質問', qIndex + 1, questions.length);
     }
 
     // Phase transition
     if (isCalibration && qIndex >= calibration.length - 1) {
         currentPhase = 'interview';
         qIndex = 0;
-        ui.setQuestion('Calibration complete. Ready for first interview question.');
-        ui.setBtn('Start Interview ▶︎');
-        ui.setProgress('Interview', 0, questions.length); 
+        ui.setQuestion('調整が完了しました。最初の質問を始めます。');
+        ui.setBtn('インタビュー開始');
+        ui.setProgress('質問', 0, questions.length); 
     }
     else if (!isCalibration && qIndex >= questions.length - 1) {
-        ui.setQuestion('Interview complete! Thank you.');
-        ui.setBtn('Done', true);
+        ui.setQuestion('インタビューが終了しました。ご協力ありがとうございました。');
+        ui.setBtn('完了', true);
         ui.setRestartBtn(true);
         ui.setExitBtn(true);
         saveSessionData();
@@ -236,8 +236,8 @@ async function finishRecording() {
     }
     else {
         qIndex++;
-        ui.setQuestion('(ready for next)');
-        ui.setBtn(isCalibration ? 'Next Calibration ▶︎' : 'Next Question ▶︎');
+        ui.setQuestion('(次へ進めます)');
+        ui.setBtn(isCalibration ? '次の調整へ' : '次の質問へ');
     }
 }
 
